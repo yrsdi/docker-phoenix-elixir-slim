@@ -4,8 +4,7 @@
 
 ###  1). Create Dockerfile
 
-```
-# Extend from the official Elixir image
+```dockerfile
 FROM elixir:latest
 
 RUN mix local.hex --force \
@@ -30,29 +29,29 @@ CMD ["mix", "phx.server"]
 
 ### 2). Build Image from Dockerfile in the current directory and tag the images
 
-```
+```bash
 docker build -t elixir-env .
 ```
-### 3. Create new phoenix project
+### 3). Create new phoenix project
 ```
 docker run --mount type=bind,source=$(pwd),target=/app -p 4000:4000 --rm elixir_slim:latest mix phx.new --no-ecto ${project app}
 ```
-### 4. Go to project app directory
+### 4). Go to project app directory
 ```
 cd ${project app}
 ```
-### 5. Get all dependencies
+### 5). Get all dependencies
 ```
 docker run --mount type=bind,source=$(pwd),target=/app -p 4000:4000 --rm elixir_slim:latest mix deps.get
 ```
-### 6. Change the http in config/dev.exs
-```
+### 6). Change the http in config/dev.exs
+```elixir
 # from this:
 http: [ip: {127, 0, 0, 1}, port: 4000],
 # to this:
 http: [ip: {0, 0, 0, 0}, port: 4000],
 ```
-### 7. Launched Application
+### 7). Launched Application
 ```
 docker run --mount type=bind,source=$(pwd),target=/app -p 4000:4000 --rm elixir_slim:latest mix phx.server
 ```
